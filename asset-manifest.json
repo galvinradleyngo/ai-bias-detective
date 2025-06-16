@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/ai-bias-detective/static/css/main.e6c13ad2.css",
+    "main.js": "/ai-bias-detective/static/js/main.35eddfaf.js",
+    "static/js/453.fc057d6b.chunk.js": "/ai-bias-detective/static/js/453.fc057d6b.chunk.js",
+    "index.html": "/ai-bias-detective/index.html",
+    "main.e6c13ad2.css.map": "/ai-bias-detective/static/css/main.e6c13ad2.css.map",
+    "main.35eddfaf.js.map": "/ai-bias-detective/static/js/main.35eddfaf.js.map",
+    "453.fc057d6b.chunk.js.map": "/ai-bias-detective/static/js/453.fc057d6b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.35eddfaf.js"
+  ]
+}
