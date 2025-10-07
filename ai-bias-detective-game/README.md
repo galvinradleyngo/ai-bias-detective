@@ -2,6 +2,17 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## GitHub Pages deployment
+
+The repository includes an automated workflow that builds and publishes the game to GitHub Pages whenever changes land on the `main` branch. To confirm that updates appear at [https://galvinradleyngo.github.io/ai-bias-detective/](https://galvinradleyngo.github.io/ai-bias-detective/):
+
+1. Merge your pull request into `main`.
+2. Wait for the **Deploy to GitHub Pages** GitHub Actions workflow to finish successfully (or trigger it manually from the **Actions** tab via **Run workflow**).
+3. Ensure the GitHub Pages site is configured to serve from the `gh-pages` branch (GitHub Pages settings ➜ **Branch** ➜ `gh-pages` / `/root`).
+4. Hard-refresh the published site or clear your browser cache to load the newest bundle.
+
+The workflow installs dependencies, runs the production build, and deploys the generated files from `ai-bias-detective-game/build` to the `gh-pages` branch so that visitors always see the latest version of the game.
+
 ## Available Scripts
 
 In the project directory, you can run:

@@ -101,6 +101,7 @@ const BiasDetectiveGame = () => {
     }
   ];
 
+const BiasDetectiveGame = () => {
   const [gameScenarios, setGameScenarios] = useState([]);
   const [currentScenario, setCurrentScenario] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState('');
@@ -112,8 +113,7 @@ const BiasDetectiveGame = () => {
   const totalScenarios = gameScenarios.length || 5;
 
   const startNewGame = () => {
-    const shuffled = [...allScenarios].sort(() => Math.random() - 0.5);
-    setGameScenarios(shuffled.slice(0, 5));
+    setGameScenarios(selectRandomScenarios());
     setCurrentScenario(0);
     setScore(0);
     setGameStarted(true);
@@ -127,7 +127,7 @@ const BiasDetectiveGame = () => {
     
     setShowResult(true);
     if (selectedAnswer === gameScenarios[currentScenario].correctAnswer) {
-      setScore(score + 1);
+      setScore((prevScore) => prevScore + 1);
     }
   };
 
@@ -148,6 +148,7 @@ const BiasDetectiveGame = () => {
     setSelectedAnswer('');
     setCurrentScenario(0);
     setScore(0);
+    setGameScenarios([]);
   };
 
   if (!gameStarted) {
@@ -222,7 +223,21 @@ const BiasDetectiveGame = () => {
   }
 
   const scenario = gameScenarios[currentScenario];
-  
+
+  if (!scenario) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 p-4 flex items-center justify-center">
+        <div className="bg-white rounded-2xl shadow-xl p-8 text-center max-w-md w-full">
+          <Brain className="mx-auto text-purple-600 mb-4" size={48} />
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Preparing your mission…</h2>
+          <p className="text-gray-600 text-sm">
+            Gathering fresh scenarios so you can continue detecting bias with insights from Ferrara (2024).
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 p-4">
       <div className="max-w-4xl mx-auto">
