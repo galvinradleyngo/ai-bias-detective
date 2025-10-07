@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Shuffle, Brain, CheckCircle, XCircle, RotateCcw, Award } from 'lucide-react';
 import { biasTypes, selectRandomScenarios } from './data/scenarios';
 
