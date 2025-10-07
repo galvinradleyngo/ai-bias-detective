@@ -9,8 +9,6 @@ export const biasTypes = {
     'Generative systems can mirror stereotypes and imbalances embedded in their training data (Ferrara, 2024).'
 };
 
-export const biasDefinitions = Object.entries(biasTypes);
-
 export const scenarioBank = [
   {
     id: 1,
