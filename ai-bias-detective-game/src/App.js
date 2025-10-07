@@ -1,87 +1,116 @@
 import React, { useState } from 'react';
 import { Shuffle, Brain, CheckCircle, XCircle, RotateCcw, Award } from 'lucide-react';
 
+const biasTypes = {
+  'Sampling Bias':
+    'Training data do not represent the wider population, so the model struggles to generalize fairly across different groups (Ferrara, 2024).',
+  'Algorithmic Bias':
+    'Design choices in the model or its objective function privilege certain attributes and systematically disadvantage others (Ferrara, 2024).',
+  'Representation Bias':
+    'Key communities or traits are underrepresented in the dataset, leading to worse performance for those groups (Ferrara, 2024).',
+  'Generative Bias':
+    'Content produced by generative systems echoes stereotypes or imbalances embedded in the data used to train them (Ferrara, 2024).'
+};
+
+const scenarioBank = [
+  {
+    id: 1,
+    title: "Chinese Social Media AI Writer",
+    scenario:
+      "A Chinese social media manager used an AI writing assistant to promote career paths after graduation. The AI suggested a poster that pictured male doctors and engineers alongside female teachers and nurses, even though no genders were specified in the prompt.",
+    question: "What is the bias in this scenario?",
+    choices: [
+      "AI creating gender stereotypes.",
+      "The poster included male and female characters.",
+      "AI generated a copy written in Chinese only.",
+      "AI highlighted only the highest-paying professions."
+    ],
+    correctAnswer: "AI creating gender stereotypes.",
+    biasCategory: "Generative Bias",
+    explanation:
+      "Ferrara (2024) notes that generative systems can reproduce stereotypical associations present in their training data. The assistant mirrored gendered patterns by pairing specific jobs with particular genders, reinforcing harmful stereotypes."
+  },
+  {
+    id: 2,
+    title: "Singapore Voice Assistant",
+    scenario:
+      "A family bought a smart home voice assistant designed for Singaporeans. It accurately recognizes Singaporean English and Mandarin, but frequently misunderstands users speaking Tamil or Malay.",
+    question: "What is the bias in this scenario?",
+    choices: [
+      "The users are not prompting the smart home voice assistant properly.",
+      "The training data contained more English and Mandarin voice samples than the other languages.",
+      "The microphone has a hardware fault that lowers audio quality.",
+      "Background music in the home confused the voice assistant."
+    ],
+    correctAnswer: "The training data contained more English and Mandarin voice samples than the other languages.",
+    biasCategory: "Representation Bias",
+    explanation:
+      "Ferrara (2024) describes how skewed datasets can underrepresent certain communities. Because Tamil and Malay speech were limited in the training set, the assistant fails to serve speakers of those languages fairly."
+  },
+  {
+    id: 3,
+    title: "Indonesian Language Learning App",
+    scenario:
+      "A language learning app asks users for their full name and username on login. The app recommends beginner lessons to users with Indonesian names but advanced courses to users with Western names.",
+    question: "What is the bias in this scenario?",
+    choices: [
+      "The app did not ask the country of origin.",
+      "The app created unfair assumptions.",
+      "The app only checked how long users spent on the welcome screen.",
+      "The app limited advanced lessons to paying subscribers only."
+    ],
+    correctAnswer: "The app created unfair assumptions.",
+    biasCategory: "Sampling Bias",
+    explanation:
+      "Ferrara (2024) highlights that biased historical data can encode unjust correlations. The model learned to equate Western names with fluency and Indonesian names with beginner status, perpetuating inequities unrelated to individual skill."
+  },
+  {
+    id: 4,
+    title: "Manila Video Streaming App",
+    scenario:
+      "A video streaming platform trained its recommendation system on viewing data from Metro Manila users. When the service expanded nationwide, viewers in other provinces kept receiving Metro Manila-centric suggestions that did not match their preferences.",
+    question: "What is the bias in this scenario?",
+    choices: [
+      "The dataset did not represent the broader Filipino population.",
+      "The dataset was not trained on the different preferences.",
+      "The app forgot to add regional language subtitles.",
+      "The internet connections outside Metro Manila were too slow for recommendations."
+    ],
+    correctAnswer: "The dataset did not represent the broader Filipino population.",
+    biasCategory: "Sampling Bias",
+    explanation:
+      "Ferrara (2024) explains that when models rely on narrow datasets, they fail to generalize to other populations. Because the training data focused on Metro Manila, recommendations for the rest of the country remained biased toward urban tastes."
+  },
+  {
+    id: 5,
+    title: "Japanese Dating App Algorithm",
+    scenario:
+      "A Tokyo-based dating app collects information such as height, age, gender, and interests. The app appears to prioritize taller users by giving them more visibility, regardless of shared interests or compatibility.",
+    question: "What is the bias in this scenario?",
+    choices: [
+      "Shorter users have a disadvantage in visibility, regardless of compatibility in other areas.",
+      "Users who sign up during peak hours wait longer to see potential matches.",
+      "Users who leave profile sections blank are automatically hidden from search.",
+      "Shorter users forget to complete all compatibility quizzes, so they see fewer matches."
+    ],
+    correctAnswer: "Shorter users have a disadvantage in visibility, regardless of compatibility in other areas.",
+    biasCategory: "Algorithmic Bias",
+    explanation:
+      "Ferrara (2024) notes that design choices in scoring functions can amplify inequities. Prioritizing height in the matching logic advantages taller users while sidelining others, demonstrating algorithmic bias in the app's ranking mechanism."
+  }
+];
+
+const selectRandomScenarios = (count = 5) => {
+  const pool = [...scenarioBank];
+  for (let i = pool.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+
+  return pool.slice(0, count);
+};
+
 const BiasDetectiveGame = () => {
-  const biasTypes = {
-    'Sampling Bias': 'Occurs when the training data are not representative of the population they serve, leading to poor performance and biased predictions for certain groups.',
-    'Algorithmic Bias': 'Results from the design and implementation of the algorithm that may prioritize certain attributes and lead to unfair outcomes.',
-    'Representation Bias': 'Happens when a dataset does not accurately represent the population it is meant to model, leading to inaccurate predictions.',
-    'Generative Bias': 'Occurs in generative AI models where outputs disproportionately reflect specific attributes, perspectives, or patterns present in training data, leading to skewed representations.'
-  };
-
-  const allScenarios = [
-    {
-      id: 1,
-      title: "Seoul Food Delivery App",
-      scenario: "A popular food delivery app in Seoul consistently shows Korean restaurants first in search results, even when users search for 'pizza' or 'burgers'. The AI was trained mainly on data from users who frequently ordered Korean food.",
-      correctAnswer: "Sampling Bias",
-      explanation: "Similar to the facial recognition bias in Ferrara (2024), the training data over-represented one group (Korean food preferences), leading to poor service for users wanting other cuisines."
-    },
-    {
-      id: 2,
-      title: "Japanese Dating App Algorithm",
-      scenario: "A dating app in Tokyo was programmed to prioritize matches based on height, with taller users getting more visibility. This systematically disadvantages shorter users regardless of compatibility in other areas.",
-      correctAnswer: "Algorithmic Bias",
-      explanation: "Like the hiring algorithm bias examples in Ferrara (2024), the app's design choices create unfair advantages for certain physical characteristics."
-    },
-    {
-      id: 3,
-      title: "Singapore Voice Assistant",
-      scenario: "A smart home voice assistant works perfectly with Singaporean English and Mandarin, but frequently misunderstands users speaking Tamil or Malay. The training data contained 80% English and Mandarin voice samples, 20% other languages.",
-      correctAnswer: "Representation Bias",
-      explanation: "Similar to healthcare AI bias noted in Ferrara (2024), the dataset doesn't accurately represent Singapore's multilingual population."
-    },
-    {
-      id: 4,
-      title: "Chinese Social Media AI Writer",
-      scenario: "An AI writing assistant for social media posts consistently suggests that doctors and engineers are male, while suggesting that teachers and nurses are female, even when users don't specify gender in their prompts.",
-      correctAnswer: "Generative Bias",
-      explanation: "This mirrors the GenAI bias examples in Ferrara (2024) where AI image generators showed similar gender stereotypes when creating professional images."
-    },
-    {
-      id: 5,
-      title: "Manila Video Streaming App",
-      scenario: "A video streaming platform's recommendation system was trained primarily on viewing data from Metro Manila users. When expanded nationwide, it poorly recommends content for users in rural areas with different cultural preferences.",
-      correctAnswer: "Sampling Bias",
-      explanation: "The training data wasn't representative of the broader Filipino population, leading to poor recommendations for underrepresented geographic areas."
-    },
-    {
-      id: 6,
-      title: "Thai Online Job Platform",
-      scenario: "A job matching website automatically filters out applicants over age 35 for 'dynamic' positions and applicants under 25 for 'senior' roles, based on the platform's assumption about age and job suitability.",
-      correctAnswer: "Algorithmic Bias",
-      explanation: "Similar to the COMPAS system bias described in Ferrara (2024), the algorithm's design creates systematic age-based discrimination."
-    },
-    {
-      id: 7,
-      title: "Korean Photo App",
-      scenario: "A smartphone camera app's auto-enhancement feature was trained mostly on photos of people with light skin tones. It over-brightens photos of people with darker skin, making them look unnatural.",
-      correctAnswer: "Representation Bias",
-      explanation: "Like the facial recognition disparities cited in Ferrara (2024), the dataset fails to represent the full spectrum of users the app serves."
-    },
-    {
-      id: 8,
-      title: "Indonesian Language Learning App",
-      scenario: "A language learning app recommends beginner lessons to users with Indonesian names but advanced courses to users with Western names, based on training data that showed this historical pattern.",
-      correctAnswer: "Sampling Bias",
-      explanation: "The training data reflected historical patterns rather than individual ability, creating unfair assumptions about users based on their names."
-    },
-    {
-      id: 9,
-      title: "Vietnamese E-commerce Site",
-      scenario: "An online shopping platform's search algorithm was designed to show premium products first to users browsing from expensive phone models, assuming these users have higher purchasing power.",
-      correctAnswer: "Algorithmic Bias",
-      explanation: "The algorithm's design makes assumptions about purchasing behavior based on device type, creating different shopping experiences for users."
-    },
-    {
-      id: 10,
-      title: "Malaysian AI Chatbot",
-      scenario: "A customer service chatbot trained on Malaysian internet conversations consistently uses more formal language with users who have Chinese names and casual language with users who have Malay names, reflecting patterns in its training data.",
-      correctAnswer: "Generative Bias",
-      explanation: "This reflects the generative bias patterns highlighted in Ferrara (2024), where AI outputs reproduce cultural patterns present in training data."
-    }
-  ];
-
   const [gameScenarios, setGameScenarios] = useState([]);
   const [currentScenario, setCurrentScenario] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState('');
@@ -90,9 +119,10 @@ const BiasDetectiveGame = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const [gameCompleted, setGameCompleted] = useState(false);
 
+  const totalScenarios = gameScenarios.length || scenarioBank.length;
+
   const startNewGame = () => {
-    const shuffled = [...allScenarios].sort(() => Math.random() - 0.5);
-    setGameScenarios(shuffled.slice(0, 5));
+    setGameScenarios(selectRandomScenarios());
     setCurrentScenario(0);
     setScore(0);
     setGameStarted(true);
@@ -106,7 +136,7 @@ const BiasDetectiveGame = () => {
     
     setShowResult(true);
     if (selectedAnswer === gameScenarios[currentScenario].correctAnswer) {
-      setScore(score + 1);
+      setScore((prevScore) => prevScore + 1);
     }
   };
 
@@ -127,6 +157,7 @@ const BiasDetectiveGame = () => {
     setSelectedAnswer('');
     setCurrentScenario(0);
     setScore(0);
+    setGameScenarios([]);
   };
 
   if (!gameStarted) {
@@ -143,8 +174,8 @@ const BiasDetectiveGame = () => {
             <h2 className="text-xl font-semibold text-purple-800 mb-3">How to Play:</h2>
             <ul className="text-left text-gray-700 space-y-2">
               <li>• You'll see 5 random scenarios from different Asian contexts</li>
-              <li>• Identify the type of AI bias from 4 key categories based on Ferrara (2024)</li>
-              <li>• Get explanations for correct answers and learn about all bias types</li>
+              <li>• Choose the most accurate description of the bias behind each scenario</li>
+              <li>• See how every answer connects to four key bias categories from Ferrara (2024)</li>
               <li>• See how well you can detect bias patterns!</li>
             </ul>
           </div>
@@ -169,11 +200,13 @@ const BiasDetectiveGame = () => {
           <h1 className="text-4xl font-bold text-gray-800 mb-4">Mission Complete!</h1>
           
           <div className="mb-6 p-6 bg-yellow-50 rounded-xl">
-            <p className="text-2xl font-bold text-gray-800 mb-2">Your Score: {score}/5</p>
+            <p className="text-2xl font-bold text-gray-800 mb-2">Your Score: {score}/{totalScenarios}</p>
             <p className="text-gray-600 text-sm">
-              {score === 5 ? "Perfect! You're a bias detection expert!" :
-               score >= 3 ? "Great work! You have a good understanding of AI bias." :
-               "Keep learning! Understanding bias is crucial for fair AI."}
+              {score === totalScenarios
+                ? "Perfect! You're a bias detection expert!"
+                : score >= Math.ceil(totalScenarios * 0.6)
+                ? "Great work! You have a good understanding of AI bias."
+                : "Keep learning! Understanding bias is crucial for fair AI."}
             </p>
           </div>
 
@@ -199,7 +232,21 @@ const BiasDetectiveGame = () => {
   }
 
   const scenario = gameScenarios[currentScenario];
-  
+
+  if (!scenario) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 p-4 flex items-center justify-center">
+        <div className="bg-white rounded-2xl shadow-xl p-8 text-center max-w-md w-full">
+          <Brain className="mx-auto text-purple-600 mb-4" size={48} />
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Preparing your mission…</h2>
+          <p className="text-gray-600 text-sm">
+            Gathering fresh scenarios so you can continue detecting bias with insights from Ferrara (2024).
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 p-4">
       <div className="max-w-4xl mx-auto">
@@ -207,9 +254,9 @@ const BiasDetectiveGame = () => {
           <div className="flex justify-between items-center flex-wrap gap-4">
             <h1 className="text-2xl md:text-3xl font-bold text-gray-800">AI Bias Detective</h1>
             <div className="flex items-center gap-4">
-              <span className="text-gray-600">Scenario {currentScenario + 1}/5</span>
+              <span className="text-gray-600">Scenario {currentScenario + 1}/{totalScenarios}</span>
               <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full font-semibold">
-                Score: {score}/5
+                Score: {score}/{totalScenarios}
               </span>
             </div>
           </div>
@@ -221,21 +268,21 @@ const BiasDetectiveGame = () => {
             <p className="text-gray-700 leading-relaxed text-sm">{scenario.scenario}</p>
           </div>
 
-          <h3 className="text-lg font-semibold text-gray-800 mb-4">What type of bias is this?</h3>
-          
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">{scenario.question}</h3>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
-            {Object.keys(biasTypes).map((bias) => (
+            {scenario.choices.map((choice) => (
               <button
-                key={bias}
-                onClick={() => setSelectedAnswer(bias)}
+                key={choice}
+                onClick={() => setSelectedAnswer(choice)}
                 disabled={showResult}
                 className={`p-4 rounded-xl border-2 transition-all text-left ${
-                  selectedAnswer === bias
+                  selectedAnswer === choice
                     ? 'border-purple-500 bg-purple-50 text-purple-800'
                     : 'border-gray-200 hover:border-purple-300 text-gray-700'
                 } ${showResult ? 'cursor-not-allowed opacity-75' : 'cursor-pointer'}`}
               >
-                <span className="font-medium text-sm">{bias}</span>
+                <span className="font-medium text-sm">{choice}</span>
               </button>
             ))}
           </div>
@@ -266,10 +313,15 @@ const BiasDetectiveGame = () => {
                   </span>
                 </div>
                 
-                <p className={`text-sm ${
-                  selectedAnswer === scenario.correctAnswer ? 'text-green-700' : 'text-red-700'
-                }`}>
-                  <strong>Correct Answer: {scenario.correctAnswer}</strong>
+                <p
+                  className={`text-sm ${
+                    selectedAnswer === scenario.correctAnswer ? 'text-green-700' : 'text-red-700'
+                  }`}
+                >
+                  <strong>Correct Answer:</strong> {scenario.correctAnswer}
+                </p>
+                <p className="mt-1 text-sm text-gray-600">
+                  <strong>Bias Category:</strong> {scenario.biasCategory}
                 </p>
                 <p className={`mt-2 text-sm ${
                   selectedAnswer === scenario.correctAnswer ? 'text-green-700' : 'text-red-700'
@@ -282,17 +334,24 @@ const BiasDetectiveGame = () => {
                 <h4 className="font-bold text-blue-800 mb-3">Bias Type Definitions:</h4>
                 <div className="space-y-3">
                   {Object.entries(biasTypes).map(([bias, definition]) => (
-                    <div key={bias} className={`p-3 rounded-lg ${
-                      bias === scenario.correctAnswer ? 'bg-green-100 border border-green-300' : 'bg-white'
-                    }`}>
-                      <strong className={`text-sm ${
-                        bias === scenario.correctAnswer ? 'text-green-800' : 'text-blue-800'
-                      }`}>
+                    <div
+                      key={bias}
+                      className={`p-3 rounded-lg ${
+                        bias === scenario.biasCategory ? 'bg-green-100 border border-green-300' : 'bg-white'
+                      }`}
+                    >
+                      <strong
+                        className={`text-sm ${
+                          bias === scenario.biasCategory ? 'text-green-800' : 'text-blue-800'
+                        }`}
+                      >
                         {bias}:
                       </strong>
-                      <span className={`ml-2 text-sm ${
-                        bias === scenario.correctAnswer ? 'text-green-700' : 'text-gray-700'
-                      }`}>
+                      <span
+                        className={`ml-2 text-sm ${
+                          bias === scenario.biasCategory ? 'text-green-700' : 'text-gray-700'
+                        }`}
+                      >
                         {definition}
                       </span>
                     </div>
