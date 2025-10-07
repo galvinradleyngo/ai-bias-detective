@@ -21,12 +21,12 @@ const BiasDetectiveGame = () => {
         "A Chinese social media manager used an AI writing assistant to promote career paths after graduation. The AI suggested a poster that pictured male doctors and engineers alongside female teachers and nurses, even though no genders were specified in the prompt.",
       question: "What is the bias in this scenario?",
       choices: [
-        "AI creating gender stereotypes.",
-        "The poster included male and female characters.",
-        "AI generated a copy written in Chinese only.",
-        "AI highlighted only the highest-paying professions."
+        "The AI reinforced gender stereotypes in how professions were depicted.",
+        "The AI promoted careers with higher average salaries over others.",
+        "The AI produced a poster that mixed both male and female characters.",
+        "The AI responded only in simplified Chinese, ignoring multilingual audiences."
       ],
-      correctAnswer: "AI creating gender stereotypes.",
+      correctAnswer: "The AI reinforced gender stereotypes in how professions were depicted.",
       biasCategory: "Generative Bias",
       explanation:
         "Ferrara (2024) notes that generative systems can reproduce stereotypical associations present in their training data. The assistant mirrored gendered patterns by pairing specific jobs with particular genders, reinforcing harmful stereotypes."
@@ -38,12 +38,12 @@ const BiasDetectiveGame = () => {
         "A family bought a smart home voice assistant designed for Singaporeans. It accurately recognizes Singaporean English and Mandarin, but frequently misunderstands users speaking Tamil or Malay.",
       question: "What is the bias in this scenario?",
       choices: [
-        "The users are not prompting the smart home voice assistant properly.",
-        "The training data contained more English and Mandarin voice samples than the other languages.",
-        "The microphone has a hardware fault that lowers audio quality.",
-        "Background music in the home confused the voice assistant."
+        "The microphone sensitivity was calibrated for higher-pitched voices only.",
+        "The training data contained far more English and Mandarin samples than Tamil or Malay.",
+        "Users were not speaking close enough to the smart speaker.",
+        "The assistant intentionally blocked responses in languages outside the app store settings."
       ],
-      correctAnswer: "The training data contained more English and Mandarin voice samples than the other languages.",
+      correctAnswer: "The training data contained far more English and Mandarin samples than Tamil or Malay.",
       biasCategory: "Representation Bias",
       explanation:
         "Ferrara (2024) describes how skewed datasets can underrepresent certain communities. Because Tamil and Malay speech were limited in the training set, the assistant fails to serve speakers of those languages fairly."
@@ -55,12 +55,12 @@ const BiasDetectiveGame = () => {
         "A language learning app asks users for their full name and username on login. The app recommends beginner lessons to users with Indonesian names but advanced courses to users with Western names.",
       question: "What is the bias in this scenario?",
       choices: [
-        "The app did not ask the country of origin.",
-        "The app created unfair assumptions.",
-        "The app only checked how long users spent on the welcome screen.",
+        "The app forgot to ask users about their country of origin during sign-up.",
+        "The app inferred proficiency from naming patterns, creating unfair assumptions.",
+        "The app experienced a bug that swapped lesson levels randomly.",
         "The app limited advanced lessons to paying subscribers only."
       ],
-      correctAnswer: "The app created unfair assumptions.",
+      correctAnswer: "The app inferred proficiency from naming patterns, creating unfair assumptions.",
       biasCategory: "Sampling Bias",
       explanation:
         "Ferrara (2024) highlights that biased historical data can encode unjust correlations. The model learned to equate Western names with fluency and Indonesian names with beginner status, perpetuating inequities unrelated to individual skill."
@@ -72,12 +72,12 @@ const BiasDetectiveGame = () => {
         "A video streaming platform trained its recommendation system on viewing data from Metro Manila users. When the service expanded nationwide, viewers in other provinces kept receiving Metro Manila-centric suggestions that did not match their preferences.",
       question: "What is the bias in this scenario?",
       choices: [
-        "The dataset did not represent the broader Filipino population.",
-        "The dataset was not trained on the different preferences.",
-        "The app forgot to add regional language subtitles.",
-        "The internet connections outside Metro Manila were too slow for recommendations."
+        "The dataset overrepresented Metro Manila viewers and ignored broader Filipino preferences.",
+        "The app did not update its user interface translations for regional dialects.",
+        "The streaming catalog only licensed shows produced in the capital region.",
+        "The recommendation algorithm could not process new user accounts from provincial ISPs."
       ],
-      correctAnswer: "The dataset did not represent the broader Filipino population.",
+      correctAnswer: "The dataset overrepresented Metro Manila viewers and ignored broader Filipino preferences.",
       biasCategory: "Sampling Bias",
       explanation:
         "Ferrara (2024) explains that when models rely on narrow datasets, they fail to generalize to other populations. Because the training data focused on Metro Manila, recommendations for the rest of the country remained biased toward urban tastes."
@@ -89,12 +89,12 @@ const BiasDetectiveGame = () => {
         "A Tokyo-based dating app collects information such as height, age, gender, and interests. The app appears to prioritize taller users by giving them more visibility, regardless of shared interests or compatibility.",
       question: "What is the bias in this scenario?",
       choices: [
-        "Shorter users have a disadvantage in visibility, regardless of compatibility in other areas.",
+        "Shorter users are deprioritized because the algorithm encodes height-based preference weights.",
         "Users who sign up during peak hours wait longer to see potential matches.",
         "Users who leave profile sections blank are automatically hidden from search.",
         "Shorter users forget to complete all compatibility quizzes, so they see fewer matches."
       ],
-      correctAnswer: "Shorter users have a disadvantage in visibility, regardless of compatibility in other areas.",
+      correctAnswer: "Shorter users are deprioritized because the algorithm encodes height-based preference weights.",
       biasCategory: "Algorithmic Bias",
       explanation:
         "Ferrara (2024) notes that design choices in scoring functions can amplify inequities. Prioritizing height in the matching logic advantages taller users while sidelining others, demonstrating algorithmic bias in the app's ranking mechanism."
