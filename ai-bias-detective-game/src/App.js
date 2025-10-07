@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Shuffle, Brain, CheckCircle, XCircle, RotateCcw, Award } from 'lucide-react';
+import { biasTypes, selectRandomScenarios } from './data/scenarios';
 
 const BiasDetectiveGame = () => {
   const biasTypes = {
@@ -112,8 +113,7 @@ const BiasDetectiveGame = () => {
   const totalScenarios = gameScenarios.length || 5;
 
   const startNewGame = () => {
-    const shuffled = [...allScenarios].sort(() => Math.random() - 0.5);
-    setGameScenarios(shuffled.slice(0, 5));
+    setGameScenarios(selectRandomScenarios());
     setCurrentScenario(0);
     setScore(0);
     setGameStarted(true);
@@ -124,16 +124,16 @@ const BiasDetectiveGame = () => {
 
   const handleAnswerSubmit = () => {
     if (!selectedAnswer) return;
-    
+
     setShowResult(true);
     if (selectedAnswer === gameScenarios[currentScenario].correctAnswer) {
-      setScore(score + 1);
+      setScore((prev) => prev + 1);
     }
   };
 
   const nextScenario = () => {
     if (currentScenario < gameScenarios.length - 1) {
-      setCurrentScenario(currentScenario + 1);
+      setCurrentScenario((prev) => prev + 1);
       setSelectedAnswer('');
       setShowResult(false);
     } else {
@@ -148,6 +148,7 @@ const BiasDetectiveGame = () => {
     setSelectedAnswer('');
     setCurrentScenario(0);
     setScore(0);
+    setGameScenarios([]);
   };
 
   if (!gameStarted) {
@@ -159,7 +160,7 @@ const BiasDetectiveGame = () => {
             <h1 className="text-4xl font-bold text-gray-800 mb-2">AI Bias Detective</h1>
             <p className="text-gray-600 text-sm">Test your knowledge of AI bias types through real-world scenarios</p>
           </div>
-          
+
           <div className="mb-8 p-6 bg-purple-50 rounded-xl">
             <h2 className="text-xl font-semibold text-purple-800 mb-3">How to Play:</h2>
             <ul className="text-left text-gray-700 space-y-2">
@@ -169,7 +170,7 @@ const BiasDetectiveGame = () => {
               <li>• See how well you can detect bias patterns!</li>
             </ul>
           </div>
-          
+
           <button
             onClick={startNewGame}
             className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-8 rounded-xl text-xl transition-colors flex items-center gap-3 mx-auto"
@@ -188,7 +189,7 @@ const BiasDetectiveGame = () => {
         <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-2xl w-full text-center">
           <Award className="mx-auto text-yellow-500 mb-4" size={64} />
           <h1 className="text-4xl font-bold text-gray-800 mb-4">Mission Complete!</h1>
-          
+
           <div className="mb-6 p-6 bg-yellow-50 rounded-xl">
             <p className="text-2xl font-bold text-gray-800 mb-2">Your Score: {score}/{totalScenarios}</p>
             <p className="text-gray-600 text-sm">
@@ -222,7 +223,21 @@ const BiasDetectiveGame = () => {
   }
 
   const scenario = gameScenarios[currentScenario];
-  
+
+  if (!scenario) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 p-4 flex items-center justify-center">
+        <div className="bg-white rounded-2xl shadow-xl p-8 text-center max-w-md w-full">
+          <Brain className="mx-auto text-purple-600 mb-4" size={48} />
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Preparing your mission…</h2>
+          <p className="text-gray-600 text-sm">
+            Gathering fresh scenarios so you can continue detecting bias with insights from Ferrara (2024).
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 p-4">
       <div className="max-w-4xl mx-auto">
@@ -273,18 +288,24 @@ const BiasDetectiveGame = () => {
             </button>
           ) : (
             <div className="space-y-6">
-              <div className={`p-6 rounded-xl ${
-                selectedAnswer === scenario.correctAnswer ? 'bg-green-50 border-2 border-green-200' : 'bg-red-50 border-2 border-red-200'
-              }`}>
+              <div
+                className={`p-6 rounded-xl ${
+                  selectedAnswer === scenario.correctAnswer
+                    ? 'bg-green-50 border-2 border-green-200'
+                    : 'bg-red-50 border-2 border-red-200'
+                }`}
+              >
                 <div className="flex items-center gap-3 mb-3">
                   {selectedAnswer === scenario.correctAnswer ? (
                     <CheckCircle className="text-green-600" size={24} />
                   ) : (
                     <XCircle className="text-red-600" size={24} />
                   )}
-                  <span className={`font-bold text-lg ${
-                    selectedAnswer === scenario.correctAnswer ? 'text-green-800' : 'text-red-800'
-                  }`}>
+                  <span
+                    className={`font-bold text-lg ${
+                      selectedAnswer === scenario.correctAnswer ? 'text-green-800' : 'text-red-800'
+                    }`}
+                  >
                     {selectedAnswer === scenario.correctAnswer ? 'Correct!' : 'Incorrect'}
                   </span>
                 </div>
@@ -299,9 +320,11 @@ const BiasDetectiveGame = () => {
                 <p className="mt-1 text-sm text-gray-600">
                   <strong>Bias Category:</strong> {scenario.biasCategory}
                 </p>
-                <p className={`mt-2 text-sm ${
-                  selectedAnswer === scenario.correctAnswer ? 'text-green-700' : 'text-red-700'
-                }`}>
+                <p
+                  className={`mt-2 text-sm ${
+                    selectedAnswer === scenario.correctAnswer ? 'text-green-700' : 'text-red-700'
+                  }`}
+                >
                   {scenario.explanation}
                 </p>
               </div>
