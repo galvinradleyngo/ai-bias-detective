@@ -14,7 +14,7 @@ export const scenarioBank = [
     id: 1,
     title: 'Chinese Social Media AI Writer',
     scenario:
-      'A Chinese social media manager used an AI writing assistant to promote career paths after graduation. The AI suggested a poster that pictured male doctors and engineers alongside female teachers and nurses, even though no genders were specified in the prompt.',
+      'A Chinese social media manager used an AI writing assistant to create a copy about the different professions students can take after graduation. GenAI generated a post that included a poster with male doctors and engineers, and female teachers and nurses.',
     question: 'What is the bias in this scenario?',
     choices: [
       'AI creating gender stereotypes.',
@@ -31,7 +31,7 @@ export const scenarioBank = [
     id: 2,
     title: 'Singapore Voice Assistant',
     scenario:
-      'A family bought a smart home voice assistant designed for Singaporeans. It accurately recognizes Singaporean English and Mandarin, but frequently misunderstands users speaking Tamil or Malay.',
+      'A family bought a smart home voice assistant that is designed for Singaporeans. The voice assistant recognizes and responds to Singaporean English and Mandarin, but frequently misunderstands users speaking Tamil or Malay.',
     question: 'What is the bias in this scenario?',
     choices: [
       'The users are not prompting the smart home voice assistant properly.',
@@ -49,7 +49,7 @@ export const scenarioBank = [
     id: 3,
     title: 'Indonesian Language Learning App',
     scenario:
-      'A language learning app asks users for their full name and username on login. The app recommends beginner lessons to users with Indonesian names but advanced courses to users with Western names.',
+      'A language learning app asks users to input their full name and username upon login. The app recommends beginner lessons to users with Indonesian names but advanced courses to users with Western names.',
     question: 'What is the bias in this scenario?',
     choices: [
       'The app did not ask the country of origin.',
@@ -66,7 +66,7 @@ export const scenarioBank = [
     id: 4,
     title: 'Manila Video Streaming App',
     scenario:
-      'A video streaming platform trained its recommendation system on viewing data from Metro Manila users. When the service expanded nationwide, viewers in other provinces kept receiving Metro Manila-centric suggestions that did not match their preferences.',
+      'A video streaming platform\'s recommendation system was trained primarily on data from Metro Manila users. When expanded nationwide, the platform recommended content from Metro Manila, despite having different cultural backgrounds for users in the other provinces.',
     question: 'What is the bias in this scenario?',
     choices: [
       'The dataset did not represent the broader Filipino population.',
@@ -83,7 +83,7 @@ export const scenarioBank = [
     id: 5,
     title: 'Japanese Dating App Algorithm',
     scenario:
-      'A Tokyo-based dating app collects information such as height, age, gender, and interests. The app appears to prioritize taller users by giving them more visibility, regardless of shared interests or compatibility.',
+      'A dating app in Tokyo asked for data such as height, age, gender, and interests. The app seemed to prioritize matches based on height, with taller users getting more visibility.',
     question: 'What is the bias in this scenario?',
     choices: [
       'Shorter users have a disadvantage in visibility, regardless of compatibility in other areas.',
