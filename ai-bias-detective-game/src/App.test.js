@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+test('renders AI Bias Detective intro screen', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: /AI Bias Detective/i })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { name: /How to Play/i })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /Start Detective Mission/i })).toBeInTheDocument();
 });
